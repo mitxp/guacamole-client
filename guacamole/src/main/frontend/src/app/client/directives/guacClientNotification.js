@@ -253,6 +253,12 @@ angular.module('client').directive('guacClientNotification', [function guacClien
             // Client error
             else if (connectionState === ManagedClientState.ConnectionState.CLIENT_ERROR) {
 
+                if (status === 0x0203) {
+                    $scope.status = false;
+                    authenticationService.logout()
+                    ['catch'](requestService.IGNORE);
+                    return;
+                }
                 // Determine translation name of error
                 const errorName = (status in CLIENT_ERRORS) ? status.toString(16).toUpperCase() : "DEFAULT";
 
