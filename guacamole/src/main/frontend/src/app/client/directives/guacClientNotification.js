@@ -215,7 +215,11 @@ angular.module('client').directive('guacClientNotification', [function guacClien
 
             // Client error
             else if (connectionState === ManagedClientState.ConnectionState.CLIENT_ERROR) {
-
+                if (status === 0x0203) {
+                    $scope.status = false;
+                    authenticationService.logout()['catch'](requestService.IGNORE);
+                    return;
+                }
                 // Translation IDs for this error code
                 const errorPrefix = "CLIENT.ERROR_CLIENT_";
                 const errorId = errorPrefix + status.toString(16).toUpperCase();
